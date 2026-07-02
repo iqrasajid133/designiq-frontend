@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DesignIQ AI — One Platform. Every Design Tool.</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#070B14;--card:#0F172A;--pur:#7C3AED;--purl:#A855F7;--cyn:#22D3EE;--grn:#22C55E;--wht:#F8FAFC;--mut:#94A3B8;--bdr:rgba(148,163,184,0.1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--wht);font-family:'Inter',sans-serif;overflow-x:hidden}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.page{min-height:80vh;background:var(--bg)}
+nav{background:rgba(7,11,20,.98);border-bottom:1px solid var(--bdr);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100}
+.lm{display:flex;align-items:center;gap:8px;cursor:pointer}
+.lmark{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#7C3AED,#22D3EE);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff}
+.ltxt{font-weight:800;font-size:15px;color:var(--wht)}
+.ltxt em{color:var(--purl);font-style:normal}
+.nlinks{display:flex;gap:2px}
+.nl{color:var(--mut);font-size:12px;font-weight:500;padding:5px 10px;border-radius:6px;cursor:pointer;transition:all .2s;border:none;background:transparent;font-family:inherit}
+.nl.on{color:var(--wht);font-weight:700;background:rgba(124,58,237,.12)}
+.nr{display:flex;gap:8px;align-items:center}
+.cpill{background:var(--card);border:1px solid var(--bdr);border-radius:7px;padding:4px 10px;font-size:12px;display:flex;gap:5px;align-items:center}
+.bgh{background:transparent;border:1px solid var(--bdr);color:var(--mut);padding:5px 13px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit}
+.bp{background:linear-gradient(135deg,#7C3AED,#A855F7);border:none;color:#fff;padding:5px 15px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.bp:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,58,237,.4)}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:13px}
+.hero{position:relative;overflow:hidden;padding:64px 20px 56px;text-align:center}
+.orb1{position:absolute;top:-60px;left:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.16) 0%,transparent 70%);pointer-events:none}
+.orb2{position:absolute;bottom:-80px;right:-40px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.1) 0%,transparent 70%);pointer-events:none}
+.hinner{position:relative;z-index:1;max-width:740px;margin:0 auto}
+.hbadge{display:inline-flex;align-items:center;gap:7px;background:rgba(124,58,237,.13);border:1px solid rgba(124,58,237,.3);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--purl);letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;animation:pu .6s ease both}
+.bdot{width:5px;height:5px;border-radius:50%;background:var(--cyn);display:inline-block;animation:pulse 2s infinite}
+h1.htitle{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,5.5vw,62px);font-weight:900;line-height:1.05;letter-spacing:-.03em;color:var(--wht);margin-bottom:16px;animation:pu .6s .1s ease both}
+.hgrad{background:linear-gradient(135deg,#A855F7,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hsub{font-size:clamp(14px,2vw,17px);color:var(--mut);max-width:500px;margin:0 auto 28px;line-height:1.75;animation:pu .6s .2s ease both}
+.hbtns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;animation:pu .6s .3s ease both}
+.bigh{padding:11px 24px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:7px;transition:all .2s;text-decoration:none;border:none}
+.bigh-p{background:linear-gradient(135deg,#7C3AED,#A855F7);color:#fff}
+.bigh-p:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(124,58,237,.45)}
+.bigh-s{background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--wht)}
+.stats{display:flex;align-items:center;justify-content:center;gap:32px;margin-top:40px;flex-wrap:wrap;animation:pu .6s .4s ease both}
+.sn{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:800;color:var(--wht);display:block}
+.sl{font-size:11px;color:var(--mut);display:block;margin-top:2px}
+.sdv{width:1px;height:30px;background:var(--bdr)}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1px;background:var(--bdr);border-radius:14px;overflow:hidden;border:1px solid var(--bdr);margin-top:36px}
+.tc{background:var(--card);padding:18px;cursor:pointer;transition:background .2s;position:relative;overflow:hidden}
+.tc:hover{background:#131e35}
+.tico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:11px;font-size:16px;transition:transform .2s}
+.tc:hover .tico{transform:scale(1.1)}
+.tn{font-weight:800;font-size:13px;color:var(--wht);margin-bottom:4px}
+.td{font-size:11px;color:var(--mut);line-height:1.5;margin-bottom:8px}
+.tbadge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:40px}
+.ba-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;overflow:hidden}
+.ba-top{padding:11px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:6px}
+.dots{display:flex;gap:4px}
+.dot{width:8px;height:8px;border-radius:50%}
+.ba-body{display:grid;grid-template-columns:1fr 1fr;position:relative;min-height:160px}
+.ba-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:16px}
+.col-lbl{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.ba-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--bdr);display:flex;align-items:center;justify-content:center}
+.ba-ico{width:22px;height:22px;border-radius:50%;background:var(--card);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--purl)}
+.fstats{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:10px}
+.fst{background:var(--card);border:1px solid var(--bdr);border-radius:9px;padding:10px 12px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:40px}
+.sc{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:22px;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#7C3AED,#22D3EE)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:40px}
+.pc{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:26px;position:relative;transition:all .3s}
+.pc:hover{transform:translateY(-3px)}
+.pc.feat{border-color:rgba(124,58,237,.45);background:linear-gradient(145deg,rgba(124,58,237,.1),var(--card))}
+.fpill{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7C3AED,#A855F7);color:#fff;font-size:9px;font-weight:800;padding:3px 12px;border-radius:20px;white-space:nowrap}
+.wslayout{display:grid;grid-template-columns:1fr 270px;height:calc(100vh - 108px)}
+.wsmain{overflow-y:auto;padding:16px;border-right:1px solid var(--bdr)}
+.wssidebar{background:#0a0e1a;overflow-y:auto}
+.udz{border:2px dashed rgba(124,58,237,.3);border-radius:13px;background:rgba(124,58,237,.04);padding:36px 20px;text-align:center;cursor:pointer;transition:all .25s}
+.udz.drag,.udz:hover{border-color:rgba(168,85,247,.6);background:rgba(124,58,237,.08)}
+.sb-sec{padding:14px 14px 12px;border-bottom:1px solid var(--bdr)}
+.sb-lbl{font-size:9px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.mcard{padding:8px 10px;border-radius:8px;border:1.5px solid var(--bdr);cursor:pointer;transition:all .2s;margin-bottom:4px}
+.mcard.sel{border-color:rgba(124,58,237,.55);background:rgba(124,58,237,.08)}
+.mcard:hover{border-color:rgba(124,58,237,.3)}
+.mcdot{width:6px;height:6px;border-radius:50%;background:#334155;transition:background .2s;flex-shrink:0}
+.mcard.sel .mcdot{background:var(--purl)}
+input[type=range]{width:100%;accent-color:var(--pur);height:4px;cursor:pointer}
+.cbrow{display:flex;align-items:center;gap:8px;margin-bottom:9px;cursor:pointer}
+.cb{width:15px;height:15px;border-radius:4px;border:1.5px solid rgba(148,163,184,.25);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.cb.chk{background:var(--pur);border-color:var(--pur)}
+select{background:var(--card);border:1px solid var(--bdr);border-radius:7px;padding:7px 9px;color:var(--wht);font-size:12px;font-family:inherit;outline:none;width:100%;cursor:pointer}
+.vecbtn{width:100%;padding:11px;background:linear-gradient(135deg,#7C3AED,#A855F7);border:none;color:#fff;font-size:13px;font-weight:800;border-radius:9px;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.vecbtn:disabled{background:rgba(124,58,237,.2);color:#64748b;cursor:not-allowed}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}
+.dstat{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:16px 18px}
+.twocol{display:grid;grid-template-columns:200px 1fr;gap:14px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse}
+th{padding:7px 14px;font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;text-align:left;border-bottom:1px solid var(--bdr)}
+td{padding:10px 14px;font-size:12px;border-bottom:1px solid var(--bdr)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#131e35}
+.stabs{display:flex;gap:0;overflow-x:auto;border-bottom:1px solid var(--bdr)}
+.stab{padding:9px 14px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--mut);font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:color .2s;font-family:inherit}
+.stab.on{color:var(--wht);font-weight:700;border-bottom-color:var(--purl)}
+.scard{background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.scard-h{padding:14px 18px;border-bottom:1px solid var(--bdr)}
+.scard-b{padding:16px 18px}
+.sfield{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--bdr)}
+.sfield:last-child{border-bottom:none}
+.tog{width:38px;height:21px;border-radius:100px;cursor:pointer;transition:background .2s;position:relative;flex-shrink:0;border:none}
+.tog-k{width:15px;height:15px;border-radius:50%;background:#fff;position:absolute;top:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.inp{background:rgba(148,163,184,.07);border:1px solid var(--bdr);border-radius:7px;padding:7px 10px;color:var(--wht);font-size:12px;font-family:inherit;outline:none}
+.asec{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:20px 22px;margin-bottom:10px}
+.faqw{display:flex;flex-direction:column;gap:1px;background:var(--bdr);border-radius:12px;overflow:hidden;border:1px solid var(--bdr)}
+.faqit{background:var(--card);cursor:pointer}
+.sec{padding:48px 20px}
+.si{max-width:1100px;margin:0 auto}
+.slbl{font-size:10px;font-weight:700;color:var(--purl);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+h2.st{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,3.5vw,34px);font-weight:800;color:var(--wht);letter-spacing:-.02em;margin-bottom:10px}
+.ss{font-size:14px;color:var(--mut);max-width:440px;line-height:1.7}
+footer{border-top:1px solid var(--bdr);padding:28px 20px;background:var(--bg)}
+.fgd{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:780px){
+  nav{padding:0 12px;height:50px}
+  .nlinks{display:none}
+  .nr{gap:6px}
+  .cpill{display:none}
+  .bgh{padding:5px 10px;font-size:11px}
+  .bp{padding:5px 12px;font-size:11px}
+  .hero{padding:36px 14px 36px}
+  .stats{gap:18px}
+  .sdv{height:24px}
+  .sn{font-size:19px}
+  .sec{padding:32px 14px}
+  .si{padding:0}
+  .fgrid{grid-template-columns:1fr;gap:24px}
+  .tgrid{grid-template-columns:repeat(2,1fr)}
+  .pgrid{grid-template-columns:1fr}
+  .sgrid{grid-template-columns:1fr}
+  .dgrid{grid-template-columns:repeat(2,1fr)}
+  .twocol{grid-template-columns:1fr}
+  .wslayout{display:flex;flex-direction:column;height:auto;min-height:calc(100vh - 96px)}
+  .wsmain{border-right:none;border-bottom:1px solid var(--bdr);padding:12px}
+  .wssidebar{max-height:none}
+  table{display:block;overflow-x:auto;white-space:nowrap}
+  .scard-b > div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  h1.htitle{font-size:clamp(28px,8vw,40px)}
+  .hsub{font-size:14px}
+  .ba-body img,.ba-body svg{max-width:54px}
+}
+@media(max-width:480px){
+  .tgrid{grid-template-columns:1fr}
+  .dgrid{grid-template-columns:1fr}
+  .stats{gap:12px}
+  .sdv{display:none}
+  .bigh{padding:9px 18px;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+const C={bg:"#070B14",card:"#0F172A",pur:"#7C3AED",purl:"#A855F7",cyn:"#22D3EE",grn:"#22C55E",amb:"#FCD34D",wht:"#F8FAFC",mut:"#94A3B8",bdr:"rgba(148,163,184,0.1)"};
+
+const TOOLS=[
+  {id:"vec",name:"VectorizeIQ",cat:"Vector",tag:"Popular",free:true,credits:5,c:C.purl,ibg:"rgba(124,58,237,0.18)",desc:"PNG/JPG → clean SVG vectors"},
+  {id:"rbg",name:"RemoveBG IQ",cat:"Editing",tag:"Free",free:true,credits:3,c:C.cyn,ibg:"rgba(34,211,238,0.13)",desc:"AI background removal"},
+  {id:"ups",name:"UpscaleIQ",cat:"Enhancement",tag:"4K",free:false,credits:10,c:C.purl,ibg:"rgba(124,58,237,0.18)",desc:"2×/3×/4× AI upscaling"},
+  {id:"enh",name:"Logo EnhanceIQ",cat:"Enhancement",tag:"New",free:true,credits:4,c:C.grn,ibg:"rgba(34,197,94,0.13)",desc:"Sharpen and clean logos"},
+  {id:"svg",name:"SVG OptimizeIQ",cat:"Optimize",tag:"",free:true,credits:2,c:C.cyn,ibg:"rgba(34,211,238,0.13)",desc:"SVGO — 70%+ size reduction"},
+  {id:"cmp",name:"CompressIQ",cat:"Optimize",tag:"",free:true,credits:2,c:C.amb,ibg:"rgba(251,191,36,0.12)",desc:"80% file size reduction"},
+  {id:"pal",name:"Color PaletteIQ",cat:"Analysis",tag:"",free:true,credits:1,c:C.purl,ibg:"rgba(124,58,237,0.18)",desc:"Extract brand colors"},
+  {id:"cnv",name:"ConverterIQ",cat:"Convert",tag:"",free:true,credits:1,c:C.cyn,ibg:"rgba(34,211,238,0.13)",desc:"Convert any image format"},
+  {id:"qr",name:"QR GeneratorIQ",cat:"Generate",tag:"",free:true,credits:2,c:C.grn,ibg:"rgba(34,197,94,0.13)",desc:"Branded QR codes"},
+  {id:"mck",name:"MockupIQ",cat:"Generate",tag:"Soon",free:false,credits:0,c:C.mut,ibg:"rgba(148,163,184,0.07)",desc:"Device mockup placement",soon:true},
+];
+
+let page="landing",wFile=null,wPreview=null,wMode="color",wDetail=70,wSmooth=60,wNoise=40,wTransBg=true,wMerge=true,wStatus="idle",wProgress=0,wStep="",wResult=null,wResultSize="",wDrag=false,billing="monthly",stab="Profile",notifs={done:true,digest:false,updates:true,limit:true,billing:true},appear={theme:"dark",compact:false,credits:true,anim:true},saved=false;
+
+// Backend connection — auto-detects localhost, otherwise edit this for your deployed backend URL
+const API_BASE = (location.hostname==="localhost"||location.hostname==="127.0.0.1") ? "http://localhost:4000" : "https://YOUR-BACKEND-URL.com";
+
+const app=document.getElementById("app");
+
+function r(){app.innerHTML=nav()+pages[page]();}
+
+function nav(){
+  const links=[{k:"landing",l:"Home"},{k:"tools",l:"Tools"},{k:"workspace",l:"Workspace"},{k:"pricing",l:"Pricing"},{k:"dashboard",l:"Dashboard"},{k:"about",l:"About"},{k:"settings",l:"Settings"}];
+  return`<nav>
+  <div class="lm" onclick="go('landing')">
+    <div class="lmark">D</div>
+    <span class="ltxt">DesignIQ <em>AI</em></span>
+  </div>
+  <div class="nlinks">${links.map(l=>`<button class="nl${page===l.k?" on":""}" onclick="go('${l.k}')">${l.l}</button>`).join("")}</div>
+  <div class="nr">
+    <div class="cpill"><span style="color:${C.cyn};font-weight:700">250</span><span style="color:${C.mut}">credits</span></div>
+    <button class="bgh">Sign in</button>
+    <button class="bp">Start free</button>
+  </div>
+</nav>`;
+}
+
+function go(p){page=p;r();}
+
+const pages={
+
+landing:()=>`<div class="page">
+<div class="hero">
+  <div class="orb1"></div><div class="orb2"></div>
+  <div class="hinner">
+    <div class="hbadge"><span class="bdot"></span>VectorizeIQ 2.0 — Now live</div>
+    <h1 class="htitle">One Platform.<br><span class="hgrad">Every Design Tool.</span></h1>
+    <p class="hsub">Professional AI tools for designers and agencies. Vectorize, remove backgrounds, upscale, compress — one workspace.</p>
+    <div class="hbtns">
+      <button class="bigh bigh-p" onclick="go('tools')">▦ Explore all tools</button>
+      <button class="bigh bigh-s" onclick="go('pricing')">View pricing →</button>
+    </div>
+    <div class="stats">
+      <div><span class="sn">250K+</span><span class="sl">Files processed</span></div>
+      <div class="sdv"></div>
+      <div><span class="sn">9</span><span class="sl">AI tools</span></div>
+      <div class="sdv"></div>
+      <div><span class="sn">4K</span><span class="sl">Max export</span></div>
+      <div class="sdv"></div>
+      <div><span class="sn">Free</span><span class="sl">To start</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="si">
+    <div class="slbl">AI Tools</div>
+    <h2 class="st">Every design tool you need</h2>
+    <p class="ss">Nine specialized AI tools. One platform. No app-switching.</p>
+    <div class="tgrid">
+      ${TOOLS.map(t=>`<div class="tc" onclick="${t.soon?"":"go('workspace')"}" style="opacity:${t.soon?.55:1}">
+        <div class="tico" style="background:${t.ibg}">
+          <span style="color:${t.c}">⬡</span>
+        </div>
+        <div class="tn">${t.name}</div>
+        <div class="td">${t.desc}</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          ${t.free?`<span class="tbadge" style="background:rgba(34,197,94,.12);color:${C.grn}">FREE</span>`:""}
+          ${t.tag?`<span class="tbadge" style="background:${t.tag==="Soon"?"rgba(251,191,36,.1)":"rgba(168,85,247,.13)"};color:${t.tag==="Soon"?C.amb:C.purl}">${t.tag}</span>`:""}
+        </div>
+      </div>`).join("")}
+    </div>
+  </div>
+</div>
+
+<div class="sec" style="background:#07091a">
+  <div class="si">
+    <div class="fgrid">
+      <div>
+        <div class="slbl">VectorizeIQ</div>
+        <h2 class="st">Raster to vector,<br>in seconds</h2>
+        <p class="ss" style="margin-bottom:22px">Upload any PNG or JPG — get color-accurate SVG with editable paths. Print-ready at any size.</p>
+        ${[["#A855F7","Full-color vectorization","Each color region → separate editable SVG path."],["#22D3EE","Smart path smoothing","Noise reduction and edge smoothing built in."],["#22C55E","SVG, PNG, PDF, EPS export","Every professional format you need."]].map(([c,t,d])=>`<div style="display:flex;gap:11px;margin-bottom:14px">
+          <div style="width:30px;height:30px;border-radius:8px;background:rgba(124,58,237,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;color:${c};font-size:13px">✓</div>
+          <div><div style="font-weight:700;font-size:13px;color:${C.wht};margin-bottom:2px">${t}</div><div style="font-size:12px;color:${C.mut};line-height:1.5">${d}</div></div>
+        </div>`).join("")}
+        <button class="bigh bigh-p" style="margin-top:10px" onclick="go('workspace')">Try VectorizeIQ →</button>
+      </div>
+      <div>
+        <div class="ba-card">
+          <div class="ba-top">
+            <div class="dots"><div class="dot" style="background:#FF5F57"></div><div class="dot" style="background:#FEBC2E"></div><div class="dot" style="background:#28C840"></div></div>
+            <span style="font-size:11px;color:${C.mut};margin-left:auto">VectorizeIQ Workspace</span>
+          </div>
+          <div class="ba-body">
+            <div class="ba-col" style="background:repeating-conic-gradient(rgba(148,163,184,.04) 0% 25%,transparent 0% 50%) 0 0/10px 10px">
+              <span class="col-lbl" style="background:rgba(148,163,184,.1);color:${C.mut}">Before</span>
+              <svg width="72" height="72" viewBox="0 0 72 72" fill="none"><rect width="72" height="72" rx="9" fill="rgba(124,58,237,0.12)"/><circle cx="36" cy="26" r="12" fill="rgba(124,58,237,0.4)"/><rect x="18" y="42" width="36" height="16" rx="5" fill="rgba(168,85,247,0.3)"/></svg>
+              <span style="font-size:10px;color:${C.mut}">logo.png · 2.4 MB</span>
+            </div>
+            <div class="ba-line"><div class="ba-ico">⇄</div></div>
+            <div class="ba-col" style="background:repeating-conic-gradient(rgba(124,58,237,.04) 0% 25%,transparent 0% 50%) 0 0/10px 10px">
+              <span class="col-lbl" style="background:rgba(124,58,237,.15);color:${C.purl}">After</span>
+              <svg width="72" height="72" viewBox="0 0 72 72" fill="none"><rect width="72" height="72" rx="9" fill="rgba(124,58,237,0.07)" stroke="rgba(124,58,237,0.35)" stroke-width="1.5"/><circle cx="36" cy="26" r="12" fill="rgba(124,58,237,0.65)" stroke="rgba(168,85,247,0.9)" stroke-width="1.2"/><rect x="18" y="42" width="36" height="16" rx="5" fill="rgba(168,85,247,0.55)" stroke="rgba(168,85,247,0.8)" stroke-width="1.2"/></svg>
+              <span style="font-size:10px;color:${C.grn}">logo.svg · 12 KB ✓</span>
+            </div>
+          </div>
+          <div class="fstats">
+            <div class="fst"><div style="font-size:10px;color:${C.mut};margin-bottom:3px">Color regions</div><div style="font-size:20px;font-weight:900;color:${C.purl}">24</div></div>
+            <div class="fst"><div style="font-size:10px;color:${C.mut};margin-bottom:3px">Size reduction</div><div style="font-size:20px;font-weight:900;color:${C.grn}">−99.5%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" style="text-align:center">
+  <div class="si">
+    <div class="slbl">Process</div>
+    <h2 class="st">Three steps to perfection</h2>
+    <div class="sgrid">
+      ${[["01","Upload your file","Drag & drop PNG, JPG, or SVG. Up to 50 MB. Batch on Pro."],["02","Configure settings","Choose colors, quality, format. Preview updates live."],["03","Download results","Get SVG, PNG, PDF, WebP, or EPS. No watermark."]].map(([n,t,d])=>`<div class="sc">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:900;color:rgba(124,58,237,.15);line-height:1;margin-bottom:14px">${n}</div>
+        <div style="font-weight:800;font-size:15px;color:${C.wht};margin-bottom:6px">${t}</div>
+        <div style="font-size:12px;color:${C.mut};line-height:1.6">${d}</div>
+      </div>`).join("")}
+    </div>
+  </div>
+</div>
+
+<div class="sec" style="background:#07091a;text-align:center">
+  <div class="si">
+    <div class="slbl">Pricing</div>
+    <h2 class="st">Simple, honest pricing</h2>
+    <p class="ss" style="margin:0 auto 32px">Start free. No card required.</p>
+    <div class="pgrid">
+      ${[{n:"Free",p:0,per:"forever",d:"All tools. No card. No limit.",f:["250 daily credits","All 9 AI tools","HD up to 1080px","No watermark"],solid:false},{n:"Pro",p:19,per:"/mo",d:"Unlimited power for pros.",f:["Unlimited credits","4K HD exports","Batch processing","Commercial license"],solid:true,feat:true},{n:"Agency",p:79,per:"/mo",d:"Teams, API, white-label.",f:["Everything in Pro","Team (10 seats)","REST API","White-label option"],solid:false}].map(p=>`<div class="pc${p.feat?" feat":""}">
+        ${p.feat?`<div class="fpill">MOST POPULAR</div>`:""}
+        <div style="font-size:10px;font-weight:700;color:${C.mut};letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">${p.n}</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:900;color:${C.wht};line-height:1;margin-bottom:3px"><span style="font-size:14px;color:${C.mut}">$</span>${p.p}</div>
+        <div style="font-size:11px;color:${C.mut};margin-bottom:14px">${p.per}</div>
+        <div style="font-size:12px;color:${C.mut};margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid ${C.bdr}">${p.d}</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">${p.f.map(f=>`<div style="display:flex;align-items:center;gap:7px;font-size:12px;color:${C.wht}"><span style="color:${C.grn}">✓</span>${f}</div>`).join("")}</div>
+        <button onclick="go('pricing')" style="width:100%;padding:10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;${p.solid?`background:linear-gradient(135deg,#7C3AED,#A855F7);border:none;color:#fff`:`background:transparent;border:1px solid ${C.bdr};color:${C.wht}`}">${p.p===0?"Get started free":"Upgrade to "+p.n}</button>
+      </div>`).join("")}
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="si" style="max-width:640px">
+    <h2 class="st" style="text-align:center">Common questions</h2>
+    <div class="faqw">
+      ${[["What file formats?","PNG, JPG, GIF, BMP, TIFF, WebP up to 50 MB. SVG for the optimizer tool."],["Colors preserved after vectorize?","Yes. Each color region becomes a separate editable SVG path using ImageTracerJS."],["Watermarks on free?","No watermarks on any plan. Free caps at 1080px and 250 daily credits."],["Commercial use on Free?","Pro and Agency plans include commercial license. Free is personal use only."]].map(([q,a],i)=>`<div class="faqit" onclick="toggleFaq(${i})">
+        <div style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span style="font-weight:700;font-size:13px;color:${C.wht}">${q}</span>
+          <span id="faqico-${i}" style="color:${C.purl};font-size:17px;font-weight:300;flex-shrink:0;display:inline-block;transition:transform .2s">+</span>
+        </div>
+        <div id="faqa-${i}" style="display:none;padding:0 18px 14px;font-size:12px;color:${C.mut};line-height:1.7">${a}</div>
+      </div>`).join("")}
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fgd">
+    <div class="lm"><div class="lmark">D</div><span class="ltxt">DesignIQ <em>AI</em></span></div>
+    <p style="font-size:12px;color:${C.mut}">© 2026 DesignIQ AI. Created by <span style="color:${C.purl};font-weight:600">Iqra Sajid</span>.</p>
+    <div style="display:flex;gap:14px">${["Privacy","Terms","Contact"].map(l=>`<span style="font-size:12px;color:${C.mut};cursor:pointer">${l}</span>`).join("")}</div>
+  </div>
+</footer>
+</div>`,
+
+tools:()=>`<div class="page">
+  <div style="background:linear-gradient(to bottom,#090d1a,#070B14);padding:40px 20px 32px;text-align:center;border-bottom:1px solid ${C.bdr}">
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,5vw,44px);font-weight:900;color:${C.wht};line-height:1.08;letter-spacing:-.03em;margin-bottom:10px">Every design tool.<br><span style="background:linear-gradient(135deg,#A855F7,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent">One platform.</span></h1>
+    <p style="font-size:14px;color:${C.mut};max-width:400px;margin:0 auto">Professional AI tools for vectors, backgrounds, upscaling, compression, and more.</p>
+  </div>
+  <div style="max-width:1100px;margin:0 auto;padding:28px 20px">
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:24px">
+      ${["All","Vector","Editing","Enhancement","Optimize","Analysis","Convert","Generate"].map(c=>`<button style="padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid ${C.bdr};background:${c==="All"?"rgba(124,58,237,.15)":"transparent"};color:${c==="All"?C.purl:C.mut};font-family:inherit">${c}</button>`).join("")}
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:12px">
+      ${TOOLS.map(t=>`<div class="card" style="padding:20px;cursor:${t.soon?"default":"pointer"};opacity:${t.soon?.55:1};transition:all .25s" onmouseenter="this.style.transform='${t.soon?"":"translateY(-3px)"}';" onmouseleave="this.style.transform='none'" onclick="${t.soon?"":"go('workspace')"}">
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+          <div style="width:38px;height:38px;border-radius:9px;background:${t.ibg};display:flex;align-items:center;justify-content:center;color:${t.c};font-size:17px">⬡</div>
+          <div style="display:flex;gap:4px">
+            ${t.free?`<span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(34,197,94,.12);color:${C.grn}">FREE</span>`:""}
+            ${t.tag?`<span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;background:${t.tag==="Soon"?"rgba(251,191,36,.1)":"rgba(168,85,247,.13)"};color:${t.tag==="Soon"?C.amb:C.purl}">${t.tag}</span>`:""}
+          </div>
+        </div>
+        <div style="font-weight:800;font-size:13px;color:${C.wht};margin-bottom:4px">${t.name}</div>
+        <div style="font-size:12px;color:${C.mut};line-height:1.55;margin-bottom:12px">${t.desc}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          ${!t.soon?`<button onclick="event.stopPropagation();go('workspace')" style="background:linear-gradient(135deg,#7C3AED,#A855F7);border:none;color:#fff;padding:6px 12px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px">Open →</button>`:`<span style="font-size:11px;color:${C.mut};font-weight:600">Coming soon</span>`}
+          ${t.credits>0?`<span style="font-size:10px;color:${C.mut}">${t.credits} credit${t.credits>1?"s":""}</span>`:""}
+        </div>
+      </div>`).join("")}
+    </div>
+  </div>
+</div>`,
+
+workspace:()=>`<div style="background:${C.bg};height:calc(100vh - 54px);display:flex;flex-direction:column">
+  <div style="background:rgba(7,11,20,.97);border-bottom:1px solid ${C.bdr};padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:46px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button onclick="go('tools')" class="bgh" style="font-size:11px;padding:4px 10px;display:flex;align-items:center;gap:5px">← All tools</button>
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="width:24px;height:24px;border-radius:6px;background:rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;font-size:11px;color:${C.purl}">⬡</div>
+        <span style="font-weight:800;font-size:13px;color:${C.wht}">VectorizeIQ</span>
+        <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(168,85,247,.15);color:${C.purl}">AI Vectorizer</span>
+      </div>
+    </div>
+    <div class="cpill"><span style="color:${C.cyn};font-weight:700">250</span><span style="color:${C.mut}">credits left</span></div>
+  </div>
+  <div class="wslayout">
+    <div class="wsmain">
+      ${!wFile?`
+      <div class="udz${wDrag?" drag":""}" id="udz" ondragover="event.preventDefault();setDrag(true)" ondragleave="setDrag(false)" ondrop="doDrop(event)" onclick="document.getElementById('wfinput').click()">
+        <div style="width:48px;height:48px;border-radius:12px;background:rgba(124,58,237,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 13px;font-size:22px;color:${C.purl}">↑</div>
+        <div style="font-weight:700;font-size:14px;color:${C.wht};margin-bottom:5px">${wDrag?"Drop it!":"Drop your image here"}</div>
+        <div style="font-size:12px;color:${C.mut};margin-bottom:16px">PNG · JPG · GIF · BMP · TIFF · WEBP · up to 50 MB</div>
+        <button class="bp" onclick="event.stopPropagation();document.getElementById('wfinput').click()">Browse file</button>
+        <input type="file" id="wfinput" accept="image/*" style="display:none" onchange="pickFile(this.files[0])">
+      </div>`:`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div class="card" style="overflow:hidden">
+          <div style="padding:9px 13px;border-bottom:1px solid ${C.bdr};display:flex;justify-content:space-between">
+            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${C.mut}">Original</span>
+            <span style="font-size:10px;color:#64748b;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${wFile?.name||""}</span>
+          </div>
+          <div style="min-height:170px;display:flex;align-items:center;justify-content:center;padding:12px;background:repeating-conic-gradient(rgba(148,163,184,.04) 0% 25%,transparent 0% 50%) 0 0/10px 10px">
+            <img src="${wPreview}" style="max-width:100%;max-height:170px;object-fit:contain;border-radius:7px">
+          </div>
+        </div>
+        <div class="card" style="overflow:hidden">
+          <div style="padding:9px 13px;border-bottom:1px solid ${C.bdr};display:flex;justify-content:space-between">
+            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${C.purl}">Vectorized SVG</span>
+            ${wResult?`<span style="font-size:10px;color:${C.grn}">✓ ${wResultSize||"ready"}</span>`:""}
+          </div>
+          <div style="min-height:170px;display:flex;align-items:center;justify-content:center;padding:12px;background:repeating-conic-gradient(rgba(124,58,237,.04) 0% 25%,transparent 0% 50%) 0 0/10px 10px">
+            ${wResult?`<div>${wResult}</div>`:`<div style="text-align:center;color:#475569"><div style="font-size:28px;margin-bottom:7px;opacity:.5">⬡</div><div style="font-size:11px">Click Vectorize to generate</div></div>`}
+          </div>
+        </div>
+      </div>
+      ${wStatus==="loading"?`
+      <div class="card" style="padding:13px 16px;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:600;color:${C.wht}">${wStep}</span>
+          <span style="font-size:12px;font-weight:700;color:${C.purl}">${wProgress}%</span>
+        </div>
+        <div style="background:rgba(148,163,184,.08);border-radius:100px;height:5px;overflow:hidden">
+          <div style="height:100%;width:${wProgress}%;background:linear-gradient(90deg,#7C3AED,#22D3EE);border-radius:100px;transition:width .3s ease"></div>
+        </div>
+        <div style="display:flex;gap:5px;margin-top:9px;flex-wrap:wrap">
+          ${["Analyzing","Tracing","Smoothing","Optimizing","Finalizing"].map((s,i)=>{const p=(i+1)/5*100;const done=wProgress>=p;const act=wProgress>=(i/5*100)&&!done;return`<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:${done?"rgba(34,197,94,.12)":act?"rgba(124,58,237,.15)":"rgba(148,163,184,.06)"};color:${done?C.grn:act?C.purl:"#64748b"}">${done?"✓ ":""}${s}</span>`;}).join("")}
+        </div>
+      </div>`:""}
+      ${wStatus==="done"&&wResult?`
+      <div class="card" style="padding:12px 16px;margin-bottom:10px;border-color:rgba(34,197,94,.2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:9px">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(34,197,94,.15);display:flex;align-items:center;justify-content:center;color:${C.grn}">✓</div>
+          <div><div style="font-weight:700;font-size:12px;color:${C.wht}">Vectorization complete</div><div style="font-size:10px;color:${C.mut}">${wResultSize||"ready"} · ${API_BASE.includes("localhost")||!API_BASE.includes("YOUR-BACKEND")?"server-processed":"demo"}</div></div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button onclick="dlSVG()" style="background:linear-gradient(135deg,#7C3AED,#A855F7);border:none;color:#fff;padding:6px 12px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">↓ SVG</button>
+          ${["PNG","PDF","EPS"].map(f=>`<button onclick="toast('${f} export — upgrade to Pro')" style="background:transparent;border:1px solid ${C.bdr};color:${C.mut};padding:6px 10px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">↓ ${f}</button>`).join("")}
+        </div>
+      </div>`:""}
+      <button onclick="clearFile()" class="bgh" style="font-size:11px;padding:6px 12px">Change file</button>
+      `}
+    </div>
+    <div class="wssidebar">
+      <div class="sb-sec">
+        <div class="sb-lbl">Vectorization mode</div>
+        ${[{id:"color",l:"Full color",d:"Preserves all colors as SVG paths."},{id:"bw",l:"Black & white",d:"High-contrast via Potrace."},{id:"limited",l:"Limited palette",d:"Reduce colors before tracing."}].map(m=>`<div class="mcard${wMode===m.id?" sel":""}" onclick="setMode('${m.id}')">
+          <div style="display:flex;align-items:center;gap:6px"><div class="mcdot"></div><span style="font-size:12px;font-weight:700;color:${C.wht}">${m.l}</span></div>
+          <div style="font-size:10px;color:#64748b;margin-top:3px;padding-left:12px;line-height:1.4">${m.d}</div>
+        </div>`).join("")}
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Detail controls</div>
+        ${[["Detail level","wDetail",1,100],["Path smoothness","wSmooth",1,100],["Noise cleanup","wNoise",1,100]].map(([l,v,mn,mx])=>`<div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:11px;color:${C.mut}">${l}</span>
+            <span style="font-size:11px;font-weight:700;color:${C.purl}" id="${v}v">${window[v]}</span>
+          </div>
+          <input type="range" min="${mn}" max="${mx}" value="${window[v]}" oninput="window.${v}=this.value;document.getElementById('${v}v').textContent=this.value">
+        </div>`).join("")}
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Options</div>
+        ${[["wTransBg","Transparent background"],["wMerge","Merge similar colors"]].map(([k,l])=>`<div class="cbrow" onclick="window.${k}=!window.${k};r()">
+          <div class="cb${window[k]?" chk":""}">${window[k]?`<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`:""}</div>
+          <span style="font-size:12px;color:${C.mut}">${l}</span>
+        </div>`).join("")}
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Output format</div>
+        <select><option>SVG — Scalable Vector</option><option>PNG — Raster (Pro)</option><option>PDF — Print (Pro)</option><option>EPS — Illustrator (Pro)</option></select>
+      </div>
+      <div style="padding:14px">
+        <button class="vecbtn" id="vbtn" onclick="runVec()" ${!wFile||wStatus==="loading"?"disabled":""}>
+          ${wStatus==="loading"?`<span style="width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite"></span> Processing…`:`⬡ ${wStatus==="done"?"Re-vectorize":"Vectorize image"}`}
+        </button>
+        ${wFile?`<div class="card" style="padding:10px 12px;margin-top:10px">
+          <div style="font-size:9px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">File info</div>
+          ${[["Name",wFile.name.length>16?wFile.name.slice(0,14)+"…":wFile.name],["Size",`${Math.round(wFile.size/1024)} KB`],["Type",wFile.type.split("/")[1]?.toUpperCase()]].map(([l,v])=>`<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:${C.mut}">${l}</span><span style="font-size:11px;color:${C.wht};font-weight:600">${v}</span></div>`).join("")}
+        </div>`:""}
+      </div>
+    </div>
+  </div>
+  <div id="toast-ws" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:#1e293b;border:1px solid ${C.bdr};color:${C.wht};padding:9px 18px;border-radius:9px;font-size:12px;font-weight:600;z-index:999;transition:transform .3s;pointer-events:none"></div>
+</div>`,
+
+pricing:()=>`<div class="page">
+  <div style="text-align:center;padding:48px 20px 0;background:linear-gradient(to bottom,#090d1a,#070B14);border-bottom:1px solid ${C.bdr}">
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,5vw,46px);font-weight:900;color:${C.wht};line-height:1.1;letter-spacing:-.03em;margin-bottom:10px">Simple, honest pricing</h1>
+    <p style="font-size:14px;color:${C.mut};max-width:380px;margin:0 auto 24px;line-height:1.7">Start free. No credit card. No hidden fees.</p>
+    <div style="display:inline-flex;gap:1px;background:rgba(148,163,184,.07);border-radius:9px;padding:3px;margin-bottom:40px">
+      ${["monthly","annual"].map(b=>`<button onclick="billing='${b}';r()" style="padding:6px 16px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border:none;background:${billing===b?C.card:"transparent"};color:${billing===b?C.wht:C.mut};transition:all .2s">${b==="monthly"?"Monthly":"Annual"}${b==="annual"?`<span style="margin-left:4px;font-size:9px;background:rgba(34,197,94,.15);color:${C.grn};padding:2px 5px;border-radius:4px">-20%</span>`:""}</button>`).join("")}
+    </div>
+  </div>
+  <div style="max-width:1000px;margin:0 auto;padding:36px 20px 56px">
+    <div class="pgrid">
+      ${[{n:"Free",p:0,per:"forever free",d:"All tools. No card. No limit.",f:["250 daily credits","All 9 AI tools","SVG, PNG, WebP export","HD up to 1080px","No watermark"],solid:false},{n:"Pro",p:19,per:"/month",d:"Unlimited power for professionals.",f:["Unlimited credits","4K HD exports","Batch processing","Priority queue","Commercial license","All formats (SVG,PNG,PDF,EPS)"],solid:true,feat:true},{n:"Agency",p:79,per:"/month",d:"Teams, API, and white-label.",f:["Everything in Pro","Team (10 seats)","REST API access","White-label option","Bulk processing","Client project folders"],solid:false}].map(p=>`<div class="pc${p.feat?" feat":""}">
+        ${p.feat?`<div class="fpill">MOST POPULAR</div>`:""}
+        <div style="font-size:10px;font-weight:700;color:${C.mut};letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">${p.n}</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:900;color:${C.wht};line-height:1;margin-bottom:3px"><span style="font-size:13px;color:${C.mut}">$</span>${billing==="annual"&&p.p>0?Math.round(p.p*.8):p.p}</div>
+        <div style="font-size:11px;color:${C.mut};margin-bottom:16px">${p.per}</div>
+        <div style="font-size:12px;color:${C.mut};margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid ${C.bdr}">${p.d}</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">${p.f.map(f=>`<div style="display:flex;align-items:center;gap:7px;font-size:12px;color:${C.wht}"><span style="color:${C.grn}">✓</span>${f}</div>`).join("")}</div>
+        <button style="width:100%;padding:10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;${p.solid?`background:linear-gradient(135deg,#7C3AED,#A855F7);border:none;color:#fff`:`background:transparent;border:1px solid ${C.bdr};color:${C.wht}`}">${p.p===0?"Get started free":p.n==="Agency"?"Contact sales":"Upgrade to "+p.n}</button>
+      </div>`).join("")}
+    </div>
+    <div class="card" style="padding:18px 22px;margin:24px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <span style="font-size:18px">💡</span>
+      <div><div style="font-weight:700;font-size:13px;color:${C.wht};margin-bottom:3px">All plans include all 9 tools</div><div style="font-size:12px;color:${C.mut}">No tool locked behind a plan. Credits and resolution vary — see above.</div></div>
+    </div>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3vw,30px);font-weight:800;color:${C.wht};text-align:center;margin-bottom:6px">Frequently asked</h2>
+    <p style="text-align:center;color:${C.mut};font-size:13px;margin-bottom:22px">Everything you need before signing up.</p>
+    <div class="faqw" style="max-width:620px;margin:0 auto">
+      ${[["What counts as a credit?","Each tool use costs credits by complexity: vectorize=5, remove-bg=3, convert=1. Resets daily."],["No watermarks on free?","Zero watermarks on all plans. Free caps at 1080px and 250 daily credits."],["Cancel anytime?","Yes, no lock-ins. Cancel in settings; plan reverts to Free at end of billing cycle."],["Commercial use on Free?","Pro and Agency include commercial license. Free is personal use only."],["Developer API?","Agency plan includes full REST API with JS and Python SDKs."]].map(([q,a],i)=>`<div class="faqit" onclick="togglePFaq(${i})">
+        <div style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span style="font-weight:700;font-size:13px;color:${C.wht}">${q}</span>
+          <span id="pfaqico-${i}" style="color:${C.purl};font-size:17px;font-weight:300;flex-shrink:0;display:inline-block;transition:transform .2s">+</span>
+        </div>
+        <div id="pfaqa-${i}" style="display:none;padding:0 18px 14px;font-size:12px;color:${C.mut};line-height:1.7">${a}</div>
+      </div>`).join("")}
+    </div>
+  </div>
+</div>`,
+
+dashboard:()=>{
+const stats=[[C.purl,"Files processed","128","this month"],[C.cyn,"Credits used","3,240","of unlimited"],[C.grn,"Storage saved","1.2 GB","compression"],[C.amb,"Exports","94","SVG, PNG, PDF"]];
+const recent=[["brand-logo.png","VectorizeIQ","SVG","12 KB","Today 2:14 PM"],["product-photo.jpg","RemoveBG IQ","PNG","340 KB","Today 11:02 AM"],["hero-image.jpg","UpscaleIQ","PNG 4K","8.2 MB","Yesterday"],["icon-set.svg","SVG OptimizeIQ","SVG","4 KB","Yesterday"],["banner.jpg","CompressIQ","WebP","88 KB","Jun 25"]];
+const usage=[120,200,85,240,160,250,130];
+return`<div class="page">
+  <div style="max-width:1100px;margin:0 auto;padding:28px 20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px">
+      <div><h1 style="font-size:22px;font-weight:900;color:${C.wht};margin-bottom:3px">Welcome back 👋</h1><p style="font-size:12px;color:${C.mut}">Your workspace overview for today.</p></div>
+      <div style="display:flex;gap:8px">
+        <div class="cpill"><span style="color:${C.cyn};font-weight:700">250</span><span style="color:${C.mut}">credits left today</span></div>
+        <button class="bp" style="display:flex;align-items:center;gap:5px">+ New file</button>
+      </div>
+    </div>
+    <div class="dgrid">${stats.map(([c,l,v,s])=>`<div class="dstat"><div style="font-size:10px;color:${C.mut};font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">${l}</div><div style="font-size:28px;font-weight:900;color:${c};line-height:1;margin-bottom:2px">${v}</div><div style="font-size:11px;color:${C.mut}">${s}</div></div>`).join("")}</div>
+    <div class="twocol">
+      <div class="card" style="overflow:hidden">
+        <div style="padding:12px 15px;border-bottom:1px solid ${C.bdr};font-weight:800;font-size:12px;color:${C.wht}">Quick launch</div>
+        ${TOOLS.filter(t=>!t.soon).slice(0,6).map(t=>`<div onclick="go('workspace')" style="padding:10px 14px;border-bottom:1px solid ${C.bdr};display:flex;align-items:center;gap:9px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='#131e35'" onmouseleave="this.style.background='transparent'">
+          <div style="width:26px;height:26px;border-radius:7px;background:${t.ibg};display:flex;align-items:center;justify-content:center;flex-shrink:0;color:${t.c};font-size:12px">⬡</div>
+          <span style="font-size:11px;font-weight:600;color:${C.wht};flex:1">${t.name}</span>
+          <span style="color:${C.mut};font-size:12px">→</span>
+        </div>`).join("")}
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div style="padding:12px 16px;border-bottom:1px solid ${C.bdr};display:flex;align-items:center;justify-content:space-between">
+          <span style="font-weight:800;font-size:12px;color:${C.wht}">Recent files</span>
+          <span style="font-size:11px;color:${C.purl};cursor:pointer;font-weight:600">View all →</span>
+        </div>
+        <table>
+          <thead><tr>${["File","Tool","Output","Size","Date"].map(h=>`<th>${h}</th>`).join("")}</tr></thead>
+          <tbody>${recent.map(r=>`<tr onmouseenter="this.style.background='#131e35'" onmouseleave="this.style.background='transparent'" style="cursor:pointer;transition:background .2s">
+            <td style="font-weight:600;color:${C.wht};max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r[0]}</td>
+            <td style="color:${C.mut};white-space:nowrap">${r[1]}</td>
+            <td><span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(34,197,94,.1);color:${C.grn}">${r[2]}</span></td>
+            <td style="color:${C.mut}">${r[3]}</td>
+            <td style="color:${C.mut};white-space:nowrap">${r[4]}</td>
+          </tr>`).join("")}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card" style="padding:16px 18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <span style="font-weight:800;font-size:12px;color:${C.wht}">Credit usage — last 7 days</span>
+        <span style="font-size:10px;color:${C.mut}">250/day free</span>
+      </div>
+      <div style="display:flex;gap:5px;align-items:flex-end;height:64px">
+        ${usage.map((v,i)=>{const p=v/250*100;return`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="width:100%;border-radius:3px 3px 0 0;background:${p>=90?"rgba(34,197,94,.18)":"rgba(124,58,237,.18)"};position:relative;height:${p}%;min-height:4px;transition:height .5s">
+            <div style="position:absolute;bottom:0;left:0;right:0;border-radius:3px 3px 0 0;background:${p>=90?C.grn:C.pur};height:40%;opacity:.95"></div>
+          </div>
+          <span style="font-size:9px;color:${C.mut}">${["M","T","W","T","F","S","S"][i]}</span>
+        </div>`;}).join("")}
+      </div>
+    </div>
+  </div>
+</div>`;},
+
+settings:()=>`<div class="page">
+  <div style="border-bottom:1px solid ${C.bdr};padding:28px 20px 0;background:linear-gradient(to bottom,#090d1a,#070B14)">
+    <div style="max-width:1000px;margin:0 auto">
+      <div style="font-size:10px;font-weight:700;color:${C.purl};text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Settings</div>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,3vw,28px);font-weight:900;color:${C.wht};margin-bottom:16px">Account settings</h1>
+      <div class="stabs">${["Profile","API & Keys","Appearance","Notifications","Billing","Security"].map(t=>`<button class="stab${stab===t?" on":""}" onclick="stab='${t}';r()">${t}</button>`).join("")}</div>
+    </div>
+  </div>
+  <div style="max-width:1000px;margin:0 auto;padding:24px 20px">
+    <div style="max-width:620px">
+      ${stab==="Profile"?`
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht};margin-bottom:2px">Personal information</div><div style="font-size:12px;color:${C.mut}">Update your name, email, and profile details.</div></div>
+        <div class="scard-b">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            ${[["Full name","Iqra Sajid"],["Email","iqra@designiq.ai"],["Company","DesignIQ AI"],["Website","https://designiq.ai"]].map(([l,v])=>`<div>
+              <label style="font-size:10px;font-weight:700;color:${C.mut};display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">${l}</label>
+              <input class="inp" value="${v}" style="width:100%">
+            </div>`).join("")}
+          </div>
+        </div>
+      </div>
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht}">Avatar</div></div>
+        <div class="scard-b" style="display:flex;align-items:center;gap:16px">
+          <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#22D3EE);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;flex-shrink:0">I</div>
+          <div><button class="bgh" style="margin-bottom:5px;font-size:12px">Upload photo</button><div style="font-size:11px;color:${C.mut}">JPG, PNG, WebP. Max 2 MB.</div></div>
+        </div>
+      </div>`:""}
+      ${stab==="API & Keys"?`
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht};margin-bottom:2px">OpenRouter API key</div><div style="font-size:12px;color:${C.mut}">Server-side only. Never exposed to the browser.</div></div>
+        <div class="scard-b">
+          <label style="font-size:10px;font-weight:700;color:${C.mut};display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">API Key</label>
+          <input class="inp" type="password" placeholder="sk-or-v1-..." style="width:100%;margin-bottom:9px">
+          <div style="font-size:11px;color:${C.mut};margin-bottom:14px">Get your key at <span style="color:${C.purl}">openrouter.ai</span>. Stored in .env — never in git.</div>
+          <div style="background:rgba(34,211,238,.05);border:1px solid rgba(34,211,238,.15);border-radius:9px;padding:12px 14px">
+            <div style="font-size:10px;font-weight:700;color:${C.cyn};margin-bottom:3px">Current model</div>
+            <code style="font-size:11px;color:${C.wht}">nousresearch/hermes-3-llama-3.1-405b:free</code>
+            <div style="font-size:10px;color:${C.mut};margin-top:3px">Set via OPENROUTER_MODEL in .env</div>
+          </div>
+        </div>
+      </div>`:""}
+      ${stab==="Appearance"?`
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht}">Theme & display</div></div>
+        <div class="scard-b">
+          ${[["Theme","Choose light, dark, or system","theme",null,["dark","light","system"]],["Compact mode","Reduce padding and spacing","compact",true,null],["Show credits bar","Display remaining credits","credits",true,null],["UI animations","Smooth transitions and motion","anim",true,null]].map(([l,h,k,isTog,opts])=>`<div class="sfield">
+            <div><div style="font-size:13px;font-weight:600;color:${C.wht};margin-bottom:2px">${l}</div><div style="font-size:11px;color:${C.mut}">${h}</div></div>
+            ${isTog?`<button class="tog" onclick="appear.${k}=!appear.${k};r()" style="background:${appear[k]?C.pur:"rgba(148,163,184,.15)"}"><div class="tog-k" style="left:${appear[k]?20:3}px"></div></button>`:`<div style="display:flex;gap:4px">${opts.map(o=>`<button onclick="appear.${k}='${o}';r()" style="padding:4px 11px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:${appear[k]===o?"1px solid rgba(124,58,237,.5)":"1px solid "+C.bdr};background:${appear[k]===o?"rgba(124,58,237,.15)":"transparent"};color:${appear[k]===o?C.purl:C.mut};font-family:inherit;text-transform:capitalize">${o}</button>`).join("")}</div>`}
+          </div>`).join("")}
+        </div>
+      </div>`:""}
+      ${stab==="Notifications"?`
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht}">Email notifications</div></div>
+        <div class="scard-b">
+          ${[["done","Processing complete","Email when your file is ready"],["digest","Weekly digest","Usage and activity summary"],["updates","Product updates","New features and tools"],["limit","Usage warnings","Alert near daily credits"],["billing","Billing alerts","Receipts and payment info"]].map(([k,l,h])=>`<div class="sfield">
+            <div><div style="font-size:13px;font-weight:600;color:${C.wht};margin-bottom:2px">${l}</div><div style="font-size:11px;color:${C.mut}">${h}</div></div>
+            <button class="tog" onclick="notifs.${k}=!notifs.${k};r()" style="background:${notifs[k]?C.pur:"rgba(148,163,184,.15)"}"><div class="tog-k" style="left:${notifs[k]?20:3}px"></div></button>
+          </div>`).join("")}
+        </div>
+      </div>`:""}
+      ${stab==="Billing"?`
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht}">Current plan</div></div>
+        <div class="scard-b">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+            <div><div style="font-weight:800;font-size:16px;color:${C.wht};margin-bottom:3px">Free Plan</div><div style="font-size:12px;color:${C.mut}">250 daily credits · All tools · 1080px max · No watermark</div></div>
+            <button class="bp">Upgrade to Pro</button>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:${C.mut};text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Credit usage today</div>
+          <div style="background:rgba(148,163,184,.08);border-radius:100px;height:6px;overflow:hidden;margin-bottom:5px">
+            <div style="height:100%;width:42%;background:linear-gradient(90deg,#7C3AED,#A855F7);border-radius:100px"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:${C.mut}"><span>105 used</span><span>250 daily limit</span></div>
+        </div>
+      </div>
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht}">Billing history</div></div>
+        <div style="padding:20px 18px;text-align:center;font-size:12px;color:${C.mut}">No billing history yet — you're on the Free plan.</div>
+      </div>`:""}
+      ${stab==="Security"?`
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht}">Change password</div></div>
+        <div class="scard-b">
+          ${["Current password","New password","Confirm new password"].map(l=>`<div style="margin-bottom:12px">
+            <label style="font-size:10px;font-weight:700;color:${C.mut};display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">${l}</label>
+            <input class="inp" type="password" placeholder="••••••••••••" style="width:100%">
+          </div>`).join("")}
+          <button class="bp" style="margin-top:4px">Update password</button>
+        </div>
+      </div>
+      <div class="scard">
+        <div class="scard-h"><div style="font-weight:800;font-size:13px;color:${C.wht}">Active sessions</div></div>
+        <div class="scard-b">
+          ${[{d:"Chrome on macOS",l:"Karachi, PK",t:"Now",c:true},{d:"Safari on iPhone",l:"Karachi, PK",t:"2 hours ago",c:false}].map((s,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;${i===0?"border-bottom:1px solid "+C.bdr:""}">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:${C.wht};margin-bottom:2px">${s.d}${s.c?`<span style="font-size:9px;background:rgba(34,197,94,.12);color:${C.grn};padding:2px 6px;border-radius:4px;font-weight:700;margin-left:6px">Current</span>`:""}</div>
+              <div style="font-size:11px;color:${C.mut}">${s.l} · ${s.t}</div>
+            </div>
+            ${!s.c?`<button class="bgh" style="font-size:11px;padding:5px 10px;color:#EF4444;border-color:rgba(239,68,68,.3)">Revoke</button>`:""}
+          </div>`).join("")}
+        </div>
+      </div>`:""}
+      ${!["Billing","API & Keys"].includes(stab)?`
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:6px">
+        <button class="bgh" style="font-size:12px">Discard</button>
+        <button class="bp" onclick="saved=true;r();setTimeout(()=>{saved=false;r()},2000)">${saved?"✓ Saved":"Save changes"}</button>
+      </div>`:""}
+    </div>
+  </div>
+</div>`,
+
+about:()=>`<div class="page">
+  <div style="max-width:720px;margin:0 auto;padding:52px 20px">
+    <div style="text-align:center;margin-bottom:40px">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.28);border-radius:100px;padding:4px 12px;font-size:10px;font-weight:700;color:${C.purl};letter-spacing:.07em;text-transform:uppercase;margin-bottom:16px">About DesignIQ AI</div>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,5vw,42px);font-weight:900;color:${C.wht};line-height:1.1;letter-spacing:-.03em;margin-bottom:12px">Built for designers.<br><span style="background:linear-gradient(135deg,#A855F7,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent">By a designer.</span></h1>
+      <p style="font-size:14px;color:${C.mut};line-height:1.8;max-width:480px;margin:0 auto">DesignIQ AI solves the fragmentation problem in design tooling — too many apps, too many subscriptions, too many context switches.</p>
+    </div>
+    ${[["The problem","Designers waste hours switching between 6–10 different tools just to prepare assets. Each with its own UI, pricing, and quality trade-offs. It's exhausting and expensive."],["The solution","One unified platform with professional-grade AI tools. Consistent UI, shared credits, instant tool switching, and agency-standard results — at a fraction of the cost."],["The technology","Powered by ImageTracerJS and Potrace for vectorization, Sharp for image processing, and OpenRouter AI for intelligent analysis. Files processed server-side — never stored permanently."]].map(([t,d])=>`<div class="asec"><div style="font-weight:800;font-size:14px;color:${C.wht};margin-bottom:8px">${t}</div><div style="font-size:13px;color:${C.mut};line-height:1.78">${d}</div></div>`).join("")}
+    <div style="background:linear-gradient(135deg,rgba(124,58,237,.1),rgba(34,211,238,.05));border:1px solid rgba(124,58,237,.22);border-radius:12px;padding:24px 24px;margin-top:10px;text-align:center">
+      <div style="font-weight:900;font-size:17px;color:${C.wht};margin-bottom:7px">Created by Iqra Sajid</div>
+      <div style="font-size:13px;color:${C.mut};line-height:1.75">Full-stack designer and developer building professional tools accessible to every creator. Built with React, Node.js, Express, Sharp, and OpenRouter AI.</div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap">
+        ${[["Stack","React · Node.js · Sharp"],["Version","1.0.0"],["Year","2026"]].map(([l,v])=>`<div class="card" style="padding:8px 14px;text-align:center"><div style="font-size:9px;font-weight:700;color:${C.mut};text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${l}</div><div style="font-size:12px;color:${C.wht};font-weight:600">${v}</div></div>`).join("")}
+      </div>
+      <div style="margin-top:14px;font-size:11px;color:${C.mut}">© 2026 DesignIQ AI · All rights reserved</div>
+    </div>
+  </div>
+</div>`
+
+};
+
+function toggleFaq(i){
+  const a=document.getElementById("faqa-"+i);
+  const ico=document.getElementById("faqico-"+i);
+  const open=a.style.display!=="none";
+  document.querySelectorAll("[id^='faqa-']").forEach(el=>el.style.display="none");
+  document.querySelectorAll("[id^='faqico-']").forEach(el=>{el.style.transform="none"});
+  if(!open){a.style.display="block";ico.style.transform="rotate(45deg)";}
+}
+function togglePFaq(i){
+  const a=document.getElementById("pfaqa-"+i);
+  const ico=document.getElementById("pfaqico-"+i);
+  const open=a.style.display!=="none";
+  document.querySelectorAll("[id^='pfaqa-']").forEach(el=>el.style.display="none");
+  document.querySelectorAll("[id^='pfaqico-']").forEach(el=>{el.style.transform="none"});
+  if(!open){a.style.display="block";ico.style.transform="rotate(45deg)";}
+}
+function setMode(m){wMode=m;r();}
+function setDrag(v){wDrag=v;const z=document.getElementById("udz");if(z){v?z.classList.add("drag"):z.classList.remove("drag");}}
+function doDrop(e){e.preventDefault();setDrag(false);pickFile(e.dataTransfer.files[0]);}
+function pickFile(f){
+  if(!f||!f.type.startsWith("image/"))return;
+  wFile=f;wResult=null;wStatus="idle";
+  const rd=new FileReader();
+  rd.onload=ev=>{wPreview=ev.target.result;r();};
+  rd.readAsDataURL(f);
+}
+function clearFile(){wFile=null;wPreview=null;wResult=null;wStatus="idle";r();}
+async function runVec(){
+  if(!wFile||wStatus==="loading")return;
+  wStatus="loading";wProgress=10;wResult=null;wStep="Uploading image…";r();
+
+  const fd=new FormData();
+  fd.append("image",wFile);
+  fd.append("mode",wMode);
+  fd.append("detail",wDetail);
+  fd.append("smoothness",wSmooth);
+  fd.append("noiseCleanup",wNoise);
+  fd.append("transparent",wTransBg);
+  fd.append("mergeSimilar",wMerge);
+
+  try{
+    wProgress=40;wStep="Processing on server…";r();
+    const res=await fetch(API_BASE+"/api/vectorize",{method:"POST",body:fd});
+    if(!res.ok){
+      const err=await res.json().catch(()=>({error:"Server error"}));
+      throw new Error(err.error||"Vectorization failed");
+    }
+    const data=await res.json();
+    wProgress=100;wStep="Finalizing";r();
+    setTimeout(()=>{
+      wResult=data.svg;
+      wResultSize=data.sizeHuman||"—";
+      wStatus="done";r();
+    },300);
+  }catch(err){
+    console.warn("Backend unavailable, using local demo fallback:",err.message);
+    runVecFallback();
+  }
+}
+
+function runVecFallback(){
+  const STEPS=["Analyzing colors","Tracing paths","Smoothing edges","Optimizing SVG","Finalizing"];
+  const PCTS=[20,45,65,85,100];
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i<STEPS.length){wStep=STEPS[i];wProgress=PCTS[i];i++;r();}
+    else{
+      clearInterval(iv);
+      setTimeout(()=>{
+        wResult=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="140" height="140"><rect width="150" height="150" rx="13" fill="#0F172A"/><circle cx="75" cy="54" r="28" fill="#7C3AED" opacity=".85"/><circle cx="75" cy="54" r="18" fill="#A855F7" opacity=".9"/><rect x="32" y="88" width="86" height="38" rx="9" fill="#7C3AED" opacity=".75"/><rect x="48" y="100" width="54" height="14" rx="5" fill="#22D3EE" opacity=".9"/><text x="75" y="111" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="700" fill="#fff" opacity=".95">VECTORIZED</text><rect x="0" y="0" width="150" height="150" rx="13" fill="none" stroke="#22D3EE" stroke-width="1.5" opacity=".35"/></svg>`;
+        wResultSize="~12 KB (demo)";
+        wStatus="done";r();
+        toast("Backend not connected — showing demo result");
+      },400);
+    }
+  },550);
+}
+function dlSVG(){
+  if(!wResult)return;
+  const b=new Blob([wResult],{type:"image/svg+xml"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);
+  a.download=(wFile?.name.replace(/\.[^.]+$/,"")||"output")+".svg";a.click();
+  toast("SVG downloaded!");
+}
+function toast(msg){
+  const t=document.getElementById("toast-ws");
+  if(!t)return;
+  t.textContent=msg;t.style.transform="translateX(-50%) translateY(0)";
+  setTimeout(()=>{t.style.transform="translateX(-50%) translateY(60px)"},2200);
+}
+
+window.go=go;window.toggleFaq=toggleFaq;window.togglePFaq=togglePFaq;window.setMode=setMode;window.setDrag=setDrag;window.doDrop=doDrop;window.pickFile=pickFile;window.clearFile=clearFile;window.runVec=runVec;window.dlSVG=dlSVG;window.toast=toast;
+window.wDetail=wDetail;window.wSmooth=wSmooth;window.wNoise=wNoise;window.wTransBg=wTransBg;window.wMerge=wMerge;
+window.appear=appear;window.notifs=notifs;window.billing=billing;window.stab=stab;window.saved=saved;
+
+r();
+</script>
+</body>
+</html>
